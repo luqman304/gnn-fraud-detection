@@ -20,21 +20,46 @@ transaction id together with the scores and known labels of its 1 to 3-hop neigh
 
 ---
 
+## Demo
+
+The screenshots below were taken from the running service on the full Elliptic graph and from the test suite.
+
+**Interactive API docs** (`gnnfraud serve`, then http://127.0.0.1:8000/docs).
+
+![OpenAPI docs listing /healthz, /model, /transactions/{tx_id} and /score](docs/screenshots/api-docs.png)
+
+**Scoring a transaction and its neighbourhood.** This is a known illicit transaction that the model misses
+(probability 0.17). The neighbourhood view shows that two of its five neighbours are known illicit, which is the
+context an analyst would use to catch it.
+
+![GET /transactions/97731146 returning the score and 1-hop neighbourhood](docs/screenshots/api-transaction.png)
+
+**Lint and tests passing locally** (37 tests, offline, about 5 seconds).
+
+![ruff and pytest output with 37 passed](docs/screenshots/tests.png)
+
+**The same checks and the Docker build passing in GitHub Actions.**
+
+![GitHub Actions run with the test and docker jobs succeeding](docs/screenshots/ci.png)
+
+---
+
 ## Contents
 
-1. [Headline results](#headline-results)
-2. [Dataset](#dataset)
-3. [Evaluation protocol](#evaluation-protocol)
-4. [Models](#models)
-5. [Full results](#full-results)
-6. [Findings](#findings)
-7. [Quick start](#quick-start)
-8. [Scoring API](#scoring-api)
-9. [Reproducing the results](#reproducing-the-results)
-10. [Testing and CI](#testing-and-ci)
-11. [Project layout](#project-layout)
-12. [Limitations](#limitations)
-13. [References](#references)
+1. [Demo](#demo)
+2. [Headline results](#headline-results)
+3. [Dataset](#dataset)
+4. [Evaluation protocol](#evaluation-protocol)
+5. [Models](#models)
+6. [Full results](#full-results)
+7. [Findings](#findings)
+8. [Quick start](#quick-start)
+9. [Scoring API](#scoring-api)
+10. [Reproducing the results](#reproducing-the-results)
+11. [Testing and CI](#testing-and-ci)
+12. [Project layout](#project-layout)
+13. [Limitations](#limitations)
+14. [References](#references)
 
 ---
 
@@ -339,7 +364,7 @@ ruff check src tests && ruff format --check src tests
 pytest
 ```
 
-The test suite runs offline in under a minute on a small synthetic graph with the same file layout as Elliptic
+The test suite runs offline in a few seconds on a small synthetic graph with the same file layout as Elliptic
 (12 time steps, 960 nodes, homophilous illicit clusters). It covers CSV parsing and validation, split ordering
 and label masking, test-label isolation, reproducibility, save/load round trips for every model type,
 validation-only tuning, checkpoint resume, the CLI and every API endpoint. GitHub Actions runs lint and tests
@@ -385,8 +410,8 @@ results/          committed benchmark outputs
 - **Reproducibility on Apple MPS.** Neural models were trained on MPS, whose kernels are not bit-for-bit
   deterministic. Re-running a seed gives slightly different numbers (within the reported intervals). CPU
   training is deterministic and is what the test suite checks.
-- **Docker image built in CI only.** The image is built by GitHub Actions; the full compose workflow was not
-  run on the development machine.
+- **Docker image built in CI only.** The image is built by GitHub Actions (see the screenshot above); the
+  full compose workflow was not run on the development machine.
 - **Feature-set definition.** The paper's "local" set has 94 features including the time step. Here the time
   step is excluded (93 features), because under a temporal split it identifies the period, not the transaction.
 
