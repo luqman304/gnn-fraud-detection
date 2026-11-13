@@ -1,0 +1,98 @@
+{
+  "config": {
+    "models": [
+      "lr",
+      "rf",
+      "mlp",
+      "gcn",
+      "sage",
+      "rf+sage"
+    ],
+    "feature_sets": [
+      "local",
+      "all"
+    ],
+    "seeds": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "split": {
+      "train_end": 29,
+      "val_end": 34
+    },
+    "gnn": {
+      "hidden": 128,
+      "num_layers": 2,
+      "dropout": 0.3,
+      "lr": 0.01,
+      "weight_decay": 0.0005,
+      "max_epochs": 200,
+      "patience": 30,
+      "illicit_weight": 0.7,
+      "device": "mps"
+    },
+    "gnn_by_kind": {
+      "mlp": {
+        "hidden": 128,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "lr": 0.01,
+        "weight_decay": 0.0005,
+        "max_epochs": 200,
+        "patience": 30,
+        "illicit_weight": 0.5,
+        "device": "mps"
+      },
+      "gcn": {
+        "hidden": 128,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "lr": 0.003,
+        "weight_decay": 0.0005,
+        "max_epochs": 200,
+        "patience": 30,
+        "illicit_weight": 0.5,
+        "device": "mps"
+      },
+      "sage": {
+        "hidden": 128,
+        "num_layers": 2,
+        "dropout": 0.3,
+        "lr": 0.01,
+        "weight_decay": 0.0005,
+        "max_epochs": 200,
+        "patience": 30,
+        "illicit_weight": 0.5,
+        "device": "mps"
+      }
+    },
+    "rf": {
+      "n_estimators": 100,
+      "max_features": 50
+    },
+    "shutdown_step": 43,
+    "n_bootstrap": 1000
+  },
+  "graph": {
+    "nodes": 203769,
+    "edges": 234355,
+    "features": 165,
+    "local_features": 93,
+    "time_steps": 49,
+    "illicit": 4545,
+    "licit": 42019,
+    "unknown": 157205,
+    "cross_time_step_edges": 0
+  },
+  "versions": {
+    "python": "3.11.12",
+    "torch": "2.15.0",
+    "torch_geometric": "2.8.1",
+    "scikit_learn": "1.9.1",
+    "numpy": "2.4.6"
+  },
+  "platform": "macOS-27.0-arm64-arm-64bit"
+}

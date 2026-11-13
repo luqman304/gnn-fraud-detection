@@ -1,0 +1,14 @@
+{
+  "mlp": {
+    "lr": 0.01,
+    "illicit_weight": 0.5
+  },
+  "gcn": {
+    "lr": 0.003,
+    "illicit_weight": 0.5
+  },
+  "sage": {
+    "lr": 0.01,
+    "illicit_weight": 0.5
+  }
+}

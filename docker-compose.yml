@@ -1,0 +1,29 @@
+# Data and trained models are mounted rather than baked in: the Elliptic dataset is not
+# redistributed. Prepare and train once (locally or with the `prepare`/`train` services),
+# then start the API with `docker compose up api`.
+x-common: &common
+  build: .
+  image: gnn-fraud:latest
+  volumes:
+    - ./data:/app/data
+    - ./artifacts:/app/artifacts
+    - ./results:/app/results
+
+services:
+  api:
+    <<: *common
+    ports:
+      - "8000:8000"
+    environment:
+      GNNFRAUD_ARTIFACT: /app/artifacts/${MODEL:-rf-all}
+    restart: unless-stopped
+
+  prepare:
+    <<: *common
+    profiles: ["jobs"]
+    command: ["gnnfraud", "prepare"]
+
+  train:
+    <<: *common
+    profiles: ["jobs"]
+    command: ["gnnfraud", "train", "--model", "rf", "--features", "all"]
